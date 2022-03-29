@@ -3,6 +3,20 @@ from tkinter import ttk
 from tkinter.messagebox import askyesno
 import csv
 
+# Data pentru fisierul csv
+# A treia fata,-,Agatha Cristie,Y,Y,N
+# Noapte Nesfarsita,-,Agatha Cristie,Y,Y,N
+# Ceasurile,-,Agatha Cristie,Y,Y,N
+# Adversarul secret,-,Agatha Cristie,Y,Y,N
+# La Hotelul Bertram,-,Agatha Cristie,Y,Y,N
+# Cei cinci purcelusi,-,Agatha Cristie,Y,Y,N
+# Conacul dintre dealuri,-,Agatha Cristie,Y,Y,N
+# Crima din Mesopotamia,-,Agatha Cristie,Y,Y,N
+# Cu cartile pe fata,-,Agatha Cristie,Y,Y,N
+# -,And then there were none,Agatha Cristie,Y,Y,N
+# Primele cazuri ale lui Poirot,-,Agatha Cristie,Y,Y,N
+# 13 la cina,-,Agatha Cristie,Y,Y,N
+
 class Window(Frame):
 
     def __init__(self, master=None):
