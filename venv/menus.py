@@ -69,6 +69,7 @@ def which_button(button_press):
 
     if (button_press == "1"):
         print("Ai apasat butonul: Find Books")
+        search_books(p)
     elif (button_press == "2"):
         print("Ai apasat butonul: Add a book")
         # addBook(p)
@@ -228,7 +229,7 @@ def listBooks(self):
                         read = row['Read']
                         own = row['Own']
                         insta = row['InstagramReview']
-                        tree.insert("", 0, values=(book_name_rom, book_name_en, author, read, own,insta))
+                        tree.insert("", 0, values=(book_name_rom, book_name_en, author, read, own, insta))
 
 
 
@@ -305,12 +306,6 @@ def add_book_window(self):
 
     import tkinter as tk
 
-    book_name_rom = "a"
-    book_name_eng = "b"
-    author_name = "c"
-    is_read = "d"
-    is_own = "e"
-    instagram_review = "f"
 
     fields = 'Numele cartii in romana',\
              'Numele cartii in engleza',\
@@ -392,6 +387,210 @@ def add_book_window(self):
                        command=(lambda e=ents: fetch(e)))
         b1.pack(side=tk.RIGHT, padx=5, pady=5)
         # root.mainloop()
+
+def search_books(self):
+    from tkinter import ttk
+    from tkinter import messagebox
+    import sqlite3
+    from tkinter import colorchooser
+    import tkinter.ttk as ttk
+    import csv
+    import os
+
+#     search menu
+    ws = Tk()
+    Frm = Frame(ws)
+    Label(Frm, text='Enter Word to Find:').pack(side=LEFT)
+    modify = Entry(Frm)
+    modify.pack(side=LEFT, fill=BOTH, expand=2)
+
+    modify.focus_set()
+
+    buttn = Button(Frm, text='Find')
+    buttn.pack(side=RIGHT)
+    Frm.pack(side=TOP)
+
+    txt = Text(ws)
+
+
+    def find():
+        import tkinter.ttk as ttk
+        import csv
+        import os
+
+        txt.tag_remove('found', '1.0', END)
+        ser = modify.get()
+
+        book_name = ser.lower() # salvam cuvantul cautat pentru a cauta in baza de date
+        with open('booksDBElena.csv', mode='r') as file:
+            rows = list(csv.DictReader(file, fieldnames=(
+                "BookNameRom", "BookNameEng", "AuthorName", "Read", "Own", "InstagramReview")))
+            for row in rows:
+                if ((book_name in row["BookNameRom"].lower()) or (book_name in row["BookNameEng"].lower()) or (book_name in row["AuthorName"].lower())):
+                    import tkinter.ttk as ttk
+                    import csv
+                    import os
+
+                    root = Tk()
+
+                    root.title("Lista tuturor cartilor")
+                    width = 1430
+                    height = 800
+
+                    screen_width = root.winfo_screenwidth()
+                    screen_height = root.winfo_screenheight()
+                    x = (screen_width / 1.2) - (width / 1.2)
+                    y = (screen_height / 1.2) - (height / 1.2)
+                    root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+                    root.resizable(1, 1)
+
+                    TableMargin = Frame(root, width=1800)
+                    TableMargin.pack(side=TOP)
+                    scrollbarx = Scrollbar(TableMargin, orient=HORIZONTAL)
+                    scrollbary = Scrollbar(TableMargin, orient=VERTICAL)
+                    tree = ttk.Treeview(TableMargin, columns=(
+                    "BookNameRom", "BookNameEng", "AuthorName", "Read", "Own", "InstagramReview"), height=700,
+                                        selectmode="extended",
+                                        yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
+                    scrollbary.config(command=tree.yview)
+                    scrollbary.pack(side=RIGHT, fill=Y)
+                    scrollbarx.config(command=tree.xview)
+                    scrollbarx.pack(side=BOTTOM, fill=X)
+                    tree.heading('BookNameRom', text="Numele cartii in romana", anchor="c")
+                    tree.heading('BookNameEng', text="Numele cartii in engleza", anchor="c")
+                    tree.heading('AuthorName', text="Autor", anchor="c")
+                    tree.heading('Read', text="Ai citit cartea?", anchor="c")
+                    tree.heading('Own', text="Este cumparata?", anchor="c")
+                    tree.heading('InstagramReview', text="Are review pe Instagram?", anchor="c")
+                    tree.column('#0', stretch=NO, minwidth=0, width=0, anchor=CENTER)
+                    tree.column('#1', stretch=NO, minwidth=0, width=300, anchor=CENTER)
+                    tree.column('#2', stretch=NO, minwidth=0, width=300, anchor=CENTER)
+                    tree.column('#3', stretch=NO, minwidth=0, width=200, anchor=CENTER)
+                    tree.column('#4', stretch=NO, minwidth=0, width=200, anchor=CENTER)
+                    tree.column('#5', stretch=NO, minwidth=0, width=200, anchor=CENTER)
+                    tree.column('#6', stretch=NO, minwidth=0, width=200, anchor=CENTER)
+
+                    tree.pack()
+
+                    with open("booksDBElena.csv", mode="r") as file:
+                            rows = csv.DictReader(file, fieldnames=
+                            ["BookNameRom", "BookNameEng", "AuthorName", "Read", "Own", "InstagramReview"])
+                            for row in rows:
+                                if ((row.get("BookNameRom") == "BookNameRom") or (
+                                        row.get(
+                                            "BookNameEng") == "BookNameEng")):  # skipping the header row when printing data
+                                    pass
+                                else:
+                                    # print(
+                                    #     f"Book name(rom): {row.get('BookNameRom')}, Book name(eng): {row.get('BookNameEng')}, Author: {row.get('AuthorName')}, Read: {row.get('Read')}, Own: {row.get('Own')}, InstagramReview: {row.get('InstagramReview')}.")
+                                    reader = csv.DictReader(file, fieldnames=
+                                    ["BookNameRom", "BookNameEng", "AuthorName", "Read", "Own", "InstagramReview"])
+                                    for row in reader:
+                                        if ((book_name in row["BookNameRom"].lower()) or (book_name in row["BookNameEng"].lower()) or (book_name in row["AuthorName"].lower())):
+                                            book_name_rom = row['BookNameRom']
+                                            book_name_en = row['BookNameEng']
+                                            author = row['AuthorName']
+                                            read = row['Read']
+                                            own = row['Own']
+                                            insta = row['InstagramReview']
+                                            tree.insert("", 0, values=(book_name_rom, book_name_en, author, read, own, insta))
+
+
+
+        if ser:
+            idx = '1.0'
+            while 1:
+                idx = txt.search(ser, idx, nocase=1,
+                                 stopindex=END)
+                if not idx: break
+                lastidx = '%s+%dc' % (idx, len(ser))
+
+                txt.tag_add('found', idx, lastidx)
+                idx = lastidx
+            txt.tag_config('found', foreground='blue')
+        modify.focus_set()
+
+    buttn.config(command=find)
+
+
+# def search_books(self):
+#     import tkinter as tk
+#     from tkinter import ttk
+#     import csv
+#
+#     app = tk.Tk()
+#     app.title('Search book')
+#     app.geometry('800x500')
+#     x = StringVar()
+#     y = StringVar()
+#     z = StringVar()
+#
+#     file = r'booksDBElena.csv'
+#
+#     f = open(file, 'r')
+#     csvreader = csv.reader(f)
+#     csvreader_list = list(csvreader)
+#
+#     # print(csvreader_list)
+#
+#     label1 = tk.Label(app, text="Cauta numele cartii in romana: ", font="Helvetica 12", fg="white", bg="#460B05")
+#     label1.place(x=10, y=10)
+#     search1 = tk.Entry(app, textvariable=x)
+#     search1.place(x=80, y=10, height=23, width=200)
+#
+#     label2 = tk.Label(app, text="Cauta numele cartii in engleza ", font="Helvetica 12", fg="white", bg="#460B05")
+#     label2.place(x=300, y=10)
+#     search2 = tk.Entry(app, textvariable=y)
+#     search2.place(x=370, y=10, height=23, width=200)
+#
+#     label3 = tk.Label(app, text="Cauta dupa autor", font="Helvetica 12", fg="white", bg="#460B05")
+#     label3.place(x=580, y=10)
+#     search3 = tk.Entry(app, textvariable=z)
+#     search3.place(x=630, y=10, height=23, width=200)
+#
+#     tv = ttk.Treeview(app, columns=('col_1', 'col_2', 'col_3'), show='headings')
+#     tv.column('col_1', minwidth=0, width=400)
+#     tv.column('col_2', minwidth=0, width=100)
+#     tv.column('col_3', minwidth=0, width=100)
+#
+#     tv.heading('col_1', text='BookNameRom')
+#     tv.heading('col_2', text='BookNameEng')
+#     tv.heading('col_3', text='AuthorName')
+#
+#     tv.place(x=100, y=200)
+#
+#     def search():
+#
+#         tv.delete(*tv.get_children())
+#         word = x.get().title()
+#         print(f'ce este word? {word}')
+#         word1 = y.get()
+#         print(f'ce este word1? {word1}')
+#
+#         word2 = z.get()
+#         print(f'ce este word2? {word2}')
+#
+#         if x.get():
+#             for (i, n, f) in csvreader_list:
+#                 if word in i:
+#                     tv.insert('', 'end', values=(i, n, f))
+#         elif y.get():
+#             for (i, n, f) in csvreader_list:
+#                 if word1 in n:
+#                     tv.insert('', 'end', values=(i, n, f))
+#         elif z.get():
+#             for (i, n, f) in csvreader_list:
+#                 if word2 in f:
+#                     tv.insert('', 'end', values=(i, n, f))
+#         else:
+#             for (i, n, f) in csvreader_list:
+#                 tv.insert('', 'end', values=(i, n, f))
+#         search1.delete(0, 'end')
+#         search2.delete(0, 'end')
+#         search3.delete(0, 'end')
+#
+#     searchbutton = tk.Button(app, text="Search", fg="black", command=search, anchor="center", justify=CENTER)
+#     searchbutton.place(x=1, y=50, width=298)
 
 
 root = Tk()
