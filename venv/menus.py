@@ -4,6 +4,8 @@ from tkinter.messagebox import askyesno
 import csv
 
 # Data pentru fisierul csv
+# BookNameRom,BookNameEng,AuthorName,Read,Own,InstagramReview
+#
 # A treia fata,-,Agatha Cristie,Y,Y,N
 # Noapte Nesfarsita,-,Agatha Cristie,Y,Y,N
 # Ceasurile,-,Agatha Cristie,Y,Y,N
@@ -16,6 +18,8 @@ import csv
 # -,And then there were none,Agatha Cristie,Y,Y,N
 # Primele cazuri ale lui Poirot,-,Agatha Cristie,Y,Y,N
 # 13 la cina,-,Agatha Cristie,Y,Y,N
+# Luceafarul,,Mihai Eminescu,Da,Nu,Nu
+# Gradina secreta,The secret garden,Frances Hodgson Burnett,Y,Y,Y
 
 class Window(Frame):
 
