@@ -101,8 +101,10 @@ def search_books(self):
     import csv
     import os
 
-#     search menu
+
+    #     search menu
     ws = Tk()
+    ws.title("Find book")
     Frm = Frame(ws)
     Label(Frm, text='Enter Word to Find:').pack(side=LEFT)
     modify = Entry(Frm)
@@ -301,6 +303,7 @@ def add_book_window(self):
 
     if __name__ == '__main__':
         root = tk.Tk()
+        root.title("Add book")
         ents = makeform(root, fields)
         root.bind('<Return>', (lambda event, e=ents: fetch(e)))
         b2 = tk.Button(root, text='Quit', command=root.quit)
@@ -321,6 +324,8 @@ def edit_book(self):
     import os
 
     ws = Tk()
+    ws.title("Edit book")
+
     Frm = Frame(ws)
     Label(Frm, text='Search for a book:').pack(side=LEFT)
     modify = Entry(Frm)
@@ -352,27 +357,18 @@ def edit_book(self):
                 if ((book_name in row["BookNameRom"].lower()) or (book_name in row["BookNameEng"].lower()) or (
                         book_name in row["AuthorName"].lower())):
                     book_found = True
-                    book_name_rom = row['BookNameRom']
-                    book_name_en = row['BookNameEng']
-                    author = row['AuthorName']
-                    read = row['Read']
-                    own = row['Own']
-                    insta = row['InstagramReview']
-
+                    # book_name_rom = row['BookNameRom']
+                    # book_name_en = row['BookNameEng']
+                    # author = row['AuthorName']
+                    # read = row['Read']
+                    # own = row['Own']
+                    # insta = row['InstagramReview']
 
         if not book_found:
             import tkinter
             from tkinter import messagebox
-
-            # hide main window
-            root = tkinter.Tk()
-            root.withdraw()
-
-            # message box display
             messagebox.showerror("Not found", f"The book '{ser}' is not present in your list!")
-
-
-        if book_found:
+        else:
             book_found = False
             import tkinter.ttk as ttk
             import csv
@@ -393,6 +389,7 @@ def edit_book(self):
 
             TableMargin = Frame(root, width=1800)
             TableMargin.pack(side=TOP)
+
             scrollbarx = Scrollbar(TableMargin, orient=HORIZONTAL)
             scrollbary = Scrollbar(TableMargin, orient=VERTICAL)
             tree = ttk.Treeview(TableMargin, columns=(
@@ -417,7 +414,16 @@ def edit_book(self):
             tree.column('#5', stretch=NO, minwidth=0, width=200, anchor=CENTER)
             tree.column('#6', stretch=NO, minwidth=0, width=200, anchor=CENTER)
 
+            edit_btn = ttk.Button(TableMargin, text="Edit")
+            edit_btn.pack(side=TOP)
+            del_btn = ttk.Button(TableMargin, text="Delete")
+            del_btn.pack(pady=10)
             tree.pack()
+
+
+
+
+
 
             with open("booksDBElena.csv", mode="r") as file:
                 rows = csv.DictReader(file, fieldnames=
@@ -444,6 +450,7 @@ def edit_book(self):
                                 insta = row['InstagramReview']
                                 tree.insert("", 0, values=(book_name_rom, book_name_en, author, read, own, insta))
 
+
         if ser:
             idx = '1.0'
             while 1:
@@ -456,6 +463,7 @@ def edit_book(self):
                 idx = lastidx
             txt.tag_config('found', foreground='blue')
         modify.focus_set()
+
 
     buttn.config(command=find)
 
